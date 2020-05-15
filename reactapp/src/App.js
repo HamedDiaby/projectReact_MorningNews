@@ -7,20 +7,27 @@ import ScreenArticlesBySource from './ScreenArticlesBySource';
 import ScreenMyArticles from './ScreenMyArticles';
 import ScreenSource from './ScreenSource';
 
+import articleWhishList from './reducers/articles';
+import token from './reducers/user';
+import {Provider} from 'react-redux';
+import {createStore, combineReducers}  from 'redux';
+
+const store = createStore(combineReducers({articleWhishList, token}));
+
 function App() {
 
   return (
-    <div>
-      {/* <Nav /> */}
-      <Router>
-        <Switch>
-          <Route path="/" exact component={ScreenHome} />
-          <Route path="/screen_articles_bySource/:id" component={ScreenArticlesBySource} />
-          <Route path="/screen_my_articles" component={ScreenMyArticles} />
-          <Route path="/screen_source" component={ScreenSource} />
-        </Switch>
-      </Router>
-    </div>
+    <Provider store={store}>
+        {/* <Nav /> */}
+        <Router>
+          <Switch>
+            <Route path="/" exact component={ScreenHome} />
+            <Route path="/screen_articles_bySource/:id" component={ScreenArticlesBySource} />
+            <Route path="/screen_my_articles" component={ScreenMyArticles} />
+            <Route path="/screen_source" component={ScreenSource} />
+          </Switch>
+        </Router>
+    </Provider>
   );
 }
 

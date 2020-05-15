@@ -3,6 +3,8 @@ import './App.css';
 import { Card, Icon, Modal, Button} from 'antd';
 import Nav from './Nav'
 
+import {connect} from 'react-redux';
+
 const { Meta } = Card;
 
 function ScreenArticlesBySource(props) {
@@ -51,7 +53,7 @@ function ScreenArticlesBySource(props) {
       }
       actions={[
           <Icon type="read" key="ellipsis2" onClick={ ()=>showModal(article.title, article.content) }/>,
-          <Icon type="like" key="ellipsis"/>
+          <Icon type="like" key="ellipsis" onClick={ ()=>{props.addArticle(article)} }/>
       ]}
       >
 
@@ -67,9 +69,9 @@ function ScreenArticlesBySource(props) {
           <p>{content}</p>
       </Modal>
         {/* {console.log(i, article.content)} */}
-  </Card>;
+    </Card>;
   
-});
+  });
 
   return (
     <div>
@@ -92,4 +94,15 @@ function ScreenArticlesBySource(props) {
   );
 }
 
-export default ScreenArticlesBySource;
+function addToWishList(dispatch){
+  return {
+    addArticle: function(article) {
+      dispatch( {type: 'addLike', actionArticle: article} );
+    }
+  }
+}
+
+export default connect(
+  null,
+  addToWishList
+)(ScreenArticlesBySource);

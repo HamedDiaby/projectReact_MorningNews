@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import {Input ,Button ,Alert} from 'antd';
 import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-function ScreenHome() {
+
+function ScreenHome(props) {
 
   const[signUpUsername, setSignUpUsername] = useState('');
   const[signUpEmail, setSignUpEmail] = useState('');
@@ -26,6 +28,7 @@ function ScreenHome() {
       if(response != null){
         setUserData(response);
         setSignUpStatus(true);
+        props.savesToken(response);
       } else {
         setErrorSignIn('Mot de passe ou email incorrect !');
       }
@@ -45,6 +48,7 @@ function ScreenHome() {
       if(response != null){
         setUserData(response);
         setSignUpStatus(true);
+        props.savesToken(response);
       } else {
         setErrorSignUp('Un autre compte est déjà associé à cet email !')
       }
@@ -116,4 +120,15 @@ function ScreenHome() {
   }
 }
 
-export default ScreenHome;
+function savedUserToken(dispatch){
+  return {
+    savesToken: function(token) {
+      dispatch( {type: 'userToken', actionUserToken: token} );
+    }
+  }
+}
+
+export default connect(
+  null,
+  savedUserToken
+)(ScreenHome);
